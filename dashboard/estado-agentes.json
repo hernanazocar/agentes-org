@@ -1,0 +1,112 @@
+{
+  "ultima_actualizacion": "2026-09-14T20:54:00Z",
+  "agentes": {
+    "marketing": {
+      "community-manager": {
+        "estado": "online",
+        "ultima_ejecucion": null,
+        "proxima_ejecucion": "2026-09-15T09:00:00Z",
+        "tareas_pendientes": 0
+      },
+      "analista-competencia": {
+        "estado": "online",
+        "ultima_ejecucion": null,
+        "proxima_ejecucion": "2026-09-15T09:00:00Z",
+        "tareas_pendientes": 0
+      },
+      "coordinador-marketing": {
+        "estado": "online",
+        "ultima_ejecucion": null,
+        "proxima_ejecucion": "2026-09-15T09:00:00Z",
+        "tareas_pendientes": 0
+      }
+    },
+    "ventas": {
+      "ejecutivo-prospeccion": {
+        "estado": "online",
+        "ultima_ejecucion": null,
+        "proxima_ejecucion": "2026-09-15T09:00:00Z",
+        "tareas_pendientes": 0
+      },
+      "analista-pipeline": {
+        "estado": "online",
+        "ultima_ejecucion": null,
+        "proxima_ejecucion": "2026-09-15T09:00:00Z",
+        "tareas_pendientes": 0
+      },
+      "coordinador-seguimiento": {
+        "estado": "online",
+        "ultima_ejecucion": null,
+        "proxima_ejecucion": "2026-09-15T09:00:00Z",
+        "tareas_pendientes": 0
+      }
+    },
+    "desarrollo": {
+      "analista-bugs": {
+        "estado": "online",
+        "ultima_ejecucion": null,
+        "proxima_ejecucion": "2026-09-15T09:00:00Z",
+        "tareas_pendientes": 0
+      },
+      "revisor-features": {
+        "estado": "online",
+        "ultima_ejecucion": null,
+        "proxima_ejecucion": "2026-09-15T09:00:00Z",
+        "tareas_pendientes": 0
+      },
+      "coordinador-tecnico": {
+        "estado": "online",
+        "ultima_ejecucion": null,
+        "proxima_ejecucion": "2026-09-15T09:00:00Z",
+        "tareas_pendientes": 0
+      }
+    },
+    "operaciones": {
+      "analista-sistemas": {
+        "estado": "online",
+        "ultima_ejecucion": null,
+        "proxima_ejecucion": "2026-09-15T09:00:00Z",
+        "tareas_pendientes": 0
+      },
+      "monitor-incidentes": {
+        "estado": "online",
+        "ultima_ejecucion": null,
+        "proxima_ejecucion": "2026-09-15T09:00:00Z",
+        "tareas_pendientes": 0
+      },
+      "coordinador-metricas": {
+        "estado": "online",
+        "ultima_ejecucion": null,
+        "proxima_ejecucion": "2026-09-15T09:00:00Z",
+        "tareas_pendientes": 0
+      }
+    }
+  },
+  "gerentes": {
+    "gerente-marketing": {
+      "estado": "online",
+      "ultima_ejecucion": null,
+      "proxima_ejecucion": "2026-09-15T10:00:00Z"
+    },
+    "gerente-ventas": {
+      "estado": "online",
+      "ultima_ejecucion": null,
+      "proxima_ejecucion": "2026-09-15T10:00:00Z"
+    },
+    "gerente-desarrollo": {
+      "estado": "online",
+      "ultima_ejecucion": null,
+      "proxima_ejecucion": "2026-09-15T10:00:00Z"
+    },
+    "gerente-operaciones": {
+      "estado": "online",
+      "ultima_ejecucion": null,
+      "proxima_ejecucion": "2026-09-15T10:00:00Z"
+    }
+  },
+  "gerencia_general": {
+    "estado": "online",
+    "ultima_ejecucion": null,
+    "proxima_ejecucion": "2026-09-15T11:00:00Z"
+  }
+}

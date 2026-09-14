@@ -1,0 +1,11 @@
+# Archivos temporales
+*.tmp
+*.log
+.DS_Store
+
+# Archivos sensibles (no commitear datos reales)
+*.env
+secrets/
+
+# Node modules si se usan scripts
+node_modules/
