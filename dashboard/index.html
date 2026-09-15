@@ -6,80 +6,108 @@
 <title>BackOffice - Panel de Control</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f9fa; color: #1a1a1a; padding: 16px 28px; min-height: 100vh; overflow-y: auto; }
-.header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; gap: 20px; }
-.header h1 { font-size: 26px; font-weight: 700; margin-bottom: 4px; }
-.header p { font-size: 15px; color: #6e7781; }
-.header-right { display: flex; gap: 16px; align-items: center; }
-.date-time { font-size: 14px; color: #6e7781; }
-.notification-bell { width: 40px; height: 40px; border-radius: 50%; background: white; border: 1px solid #e8eaed; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-.notification-bell svg { width: 20px; height: 20px; stroke: #1a1a1a; }
-.user-menu { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-.user-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #4a5568, #2d3748); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 16px; }
-.user-name { font-size: 15px; font-weight: 600; color: #1a1a1a; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f9fa; color: #1a1a1a; min-height: 100vh; overflow-y: auto; }
+.main-container { display: flex; min-height: 100vh; }
+.sidebar { width: 200px; background: #2c3540; color: white; padding: 0; position: fixed; left: 0; top: 0; height: 100vh; overflow-y: auto; overflow-x: hidden; transition: width 0.3s ease; z-index: 1000; }
+.sidebar.collapsed { width: 60px; }
+.sidebar-header { padding: 12px; border-bottom: 1px solid #374151; display: flex; align-items: center; justify-content: center; min-height: 56px; }
+.sidebar:not(.collapsed) .sidebar-header { justify-content: space-between; padding: 12px 16px; }
+.sidebar-header span { white-space: nowrap; transition: opacity 0.3s; }
+.sidebar.collapsed .sidebar-header span { display: none; }
+.sidebar-toggle { background: #374151; border: none; border-radius: 6px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; flex-shrink: 0; }
+.sidebar-toggle:hover { background: #4a5568; }
+.sidebar-toggle svg { width: 20px; height: 20px; stroke: #ffffff; transition: transform 0.3s; }
+.sidebar.collapsed .sidebar-toggle svg { transform: rotate(180deg); }
+.sidebar-menu { padding: 12px 0; }
+.content-wrapper { flex: 1; padding: 12px 20px; transition: margin-left 0.3s ease; }
+.content-wrapper.shifted { margin-left: 200px; }
+.content-wrapper.collapsed-shifted { margin-left: 60px; }
+.menu-item { display: flex; align-items: center; gap: 10px; padding: 10px 16px; margin: 2px 8px; border-radius: 6px; cursor: pointer; transition: background 0.2s; color: #b8c1cc; font-size: 13px; white-space: nowrap; }
+.sidebar.collapsed .menu-item { padding: 10px; margin: 2px 8px; justify-content: center; }
+.sidebar.collapsed .menu-item span { display: none; }
+.menu-item:hover { background: #374151; }
+.menu-item.active { background: #4a5568; color: white; }
+.menu-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+.sidebar-footer { position: absolute; bottom: 16px; left: 0; right: 0; padding: 12px 16px; border-top: 1px solid #374151; transition: opacity 0.3s; }
+.sidebar.collapsed .sidebar-footer { opacity: 0; pointer-events: none; }
+.system-status-sidebar { display: flex; align-items: center; gap: 8px; }
+.system-status-sidebar .dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; flex-shrink: 0; }
+.system-status-sidebar-text { flex: 1; white-space: nowrap; }
+.system-status-sidebar-title { font-size: 11px; font-weight: 600; color: white; margin-bottom: 1px; }
+.system-status-sidebar-subtitle { font-size: 9px; color: #b8c1cc; }
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 16px; }
+.header h1 { font-size: 22px; font-weight: 700; margin-bottom: 3px; }
+.header p { font-size: 13px; color: #6e7781; }
+.header-right { display: flex; gap: 10px; align-items: center; }
+.date-time { font-size: 12px; color: #6e7781; white-space: nowrap; }
+.notification-bell { width: 34px; height: 34px; border-radius: 50%; background: white; border: 1px solid #e8eaed; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.notification-bell svg { width: 18px; height: 18px; stroke: #1a1a1a; }
+.user-menu { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.user-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #4a5568, #2d3748); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; }
+.user-name { font-size: 13px; font-weight: 600; color: #1a1a1a; }
 .user-dropdown { width: 16px; height: 16px; }
 .user-dropdown svg { width: 100%; height: 100%; fill: #6e7781; }
-.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 14px; }
-.system-status-card { background: white; border-radius: 12px; padding: 12px 16px; border: 1px solid #e8eaed; text-align: center; min-width: 140px; }
-.system-status-indicator { display: flex; align-items: center; gap: 6px; justify-content: center; margin-bottom: 4px; }
+.system-status-card { background: white; border-radius: 10px; padding: 10px 24px; border: 1px solid #e8eaed; margin-bottom: 14px; display: flex; align-items: center; gap: 12px; justify-content: center; }
+.system-status-indicator { display: flex; align-items: center; gap: 6px; }
 .system-status-indicator .dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; }
-.system-status-title { font-size: 12px; font-weight: 700; color: #1a1a1a; }
-.system-status-subtitle { font-size: 10px; color: #6e7781; margin-bottom: 6px; }
-.system-status-count { font-size: 20px; font-weight: 700; color: #1a1a1a; line-height: 1; margin-bottom: 3px; }
-.system-status-label { font-size: 10px; color: #6e7781; }
-.stat-card { background: white; border-radius: 12px; padding: 18px; border: 1px solid #e8eaed; display: flex; gap: 14px; position: relative; }
-.stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.system-status-title { font-size: 12px; font-weight: 700; color: #1a1a1a; white-space: nowrap; }
+.system-status-subtitle { font-size: 11px; color: #6e7781; white-space: nowrap; }
+.system-status-count { font-size: 18px; font-weight: 700; color: #1a1a1a; line-height: 1; white-space: nowrap; }
+.system-status-label { font-size: 11px; color: #6e7781; white-space: nowrap; }
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px; }
+.stat-card { background: white; border-radius: 10px; padding: 14px; border: 1px solid #e8eaed; display: flex; gap: 12px; position: relative; }
+.stat-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .stat-icon.blue { background: #f6f8fa; }
 .stat-icon.purple { background: #f6f8fa; }
 .stat-icon.orange { background: #f6f8fa; }
 .stat-icon.green { background: #f6f8fa; }
-.stat-icon svg { width: 24px; height: 24px; }
-.stat-value { font-size: 32px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
-.stat-label { font-size: 14px; color: #6e7781; margin-bottom: 6px; }
-.stat-change { font-size: 13px; font-weight: 600; color: #22c55e; }
+.stat-icon svg { width: 20px; height: 20px; }
+.stat-value { font-size: 26px; font-weight: 700; line-height: 1; margin-bottom: 3px; }
+.stat-label { font-size: 12px; color: #6e7781; margin-bottom: 4px; }
+.stat-change { font-size: 11px; font-weight: 600; color: #22c55e; }
 .system-indicator { position: absolute; top: 24px; right: 24px; display: flex; gap: 6px; font-size: 12px; font-weight: 600; color: #22c55e; }
 .system-indicator .dot, .status-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; }
 .agents-counter { position: absolute; top: 24px; right: 24px; font-size: 14px; font-weight: 700; text-align: right; }
-.org-section { background: white; border-radius: 12px; padding: 20px; margin-bottom: 12px; border: 1px solid #e8eaed; }
-.org-header { display: flex; justify-content: space-between; margin-bottom: 16px; }
-.section-title { font-size: 20px; font-weight: 700; }
-.section-link { font-size: 14px; color: #4a5568; font-weight: 600; cursor: pointer; }
+.org-section { background: white; border-radius: 10px; padding: 16px; margin-bottom: 10px; border: 1px solid #e8eaed; }
+.org-header { display: flex; justify-content: space-between; margin-bottom: 12px; }
+.section-title { font-size: 16px; font-weight: 700; }
+.section-link { font-size: 12px; color: #4a5568; font-weight: 600; cursor: pointer; }
 .org-chart { display: flex; flex-direction: column; align-items: center; position: relative; }
-.ceo-container { display: flex; flex-direction: column; align-items: center; position: relative; margin-bottom: 32px; }
-.ceo-node { background: white; border: 2px solid #d0d7de; border-radius: 12px; padding: 20px 32px; text-align: center; min-width: 220px; position: relative; z-index: 10; }
-.ceo-avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #4a5568, #2d3748); display: flex; align-items: center; justify-content: center; color: white; font-size: 26px; font-weight: 700; margin: 0 auto 10px; }
-.ceo-name { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
-.ceo-role { font-size: 14px; color: #6e7781; margin-bottom: 10px; }
-.status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: #e6f9f0; border-radius: 12px; font-size: 13px; font-weight: 600; color: #22c55e; }
-.org-lines { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); width: 1px; height: 32px; background: #d0d7de; }
-.strategy-box { position: absolute; top: 0; right: -200px; background: #fafbfc; border: 1px solid #e8eaed; border-radius: 8px; padding: 12px; width: 180px; font-size: 12px; }
-.strategy-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
-.strategy-item { font-size: 12px; color: #6e7781; margin-bottom: 4px; padding-left: 12px; position: relative; }
+.ceo-container { display: flex; flex-direction: column; align-items: center; position: relative; margin-bottom: 18px; }
+.ceo-node { background: white; border: 2px solid #d0d7de; border-radius: 8px; padding: 12px 18px; text-align: center; min-width: 150px; position: relative; z-index: 10; }
+.ceo-avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, #4a5568, #2d3748); display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; font-weight: 700; margin: 0 auto 6px; }
+.ceo-name { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+.ceo-role { font-size: 10px; color: #6e7781; margin-bottom: 6px; }
+.status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #e6f9f0; border-radius: 10px; font-size: 10px; font-weight: 600; color: #22c55e; }
+.org-lines { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); width: 1px; height: 24px; background: #d0d7de; }
+.strategy-box { position: absolute; top: 0; right: -160px; background: #fafbfc; border: 1px solid #e8eaed; border-radius: 6px; padding: 10px; width: 150px; font-size: 10px; }
+.strategy-title { font-size: 11px; font-weight: 700; margin-bottom: 6px; }
+.strategy-item { font-size: 10px; color: #6e7781; margin-bottom: 3px; padding-left: 10px; position: relative; }
 .strategy-item:before { content: '▸'; position: absolute; left: 0; color: #4a5568; }
 .departments-container { width: 100%; position: relative; }
 .horizontal-line { position: absolute; top: 0; left: 50px; right: 50px; height: 1px; background: #d0d7de; }
-.departments-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; padding-top: 24px; position: relative; }
-.dept-card { background: white; border: 2px solid #e8eaed; border-radius: 12px; padding: 16px 12px; position: relative; }
-.dept-card:before { content: ''; position: absolute; top: -24px; left: 50%; transform: translateX(-50%); width: 1px; height: 24px; background: #d0d7de; }
-.dept-header { text-align: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #f6f8fa; }
-.dept-icon { width: 56px; height: 56px; border-radius: 50%; background: #4a5568; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; }
-.dept-icon svg { width: 28px; height: 28px; fill: white; stroke: white; }
-.dept-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
-.dept-role { font-size: 13px; color: #6e7781; margin-bottom: 8px; }
-.dept-count { font-size: 12px; color: #8b949e; margin-top: 8px; }
-.agents-list { display: flex; flex-direction: column; gap: 6px; }
-.agent-item { display: flex; align-items: center; gap: 8px; padding: 8px; background: #fafbfc; border-radius: 6px; }
-.agent-icon { width: 28px; height: 28px; border-radius: 6px; background: #6e7781; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.agent-icon svg { width: 16px; height: 16px; fill: white; }
+.departments-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; padding-top: 16px; position: relative; }
+.dept-card { background: white; border: 2px solid #e8eaed; border-radius: 8px; padding: 10px 8px; position: relative; }
+.dept-card:before { content: ''; position: absolute; top: -16px; left: 50%; transform: translateX(-50%); width: 1px; height: 16px; background: #d0d7de; }
+.dept-header { text-align: center; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #f6f8fa; }
+.dept-icon { width: 38px; height: 38px; border-radius: 50%; background: #4a5568; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 6px; }
+.dept-icon svg { width: 20px; height: 20px; fill: white; stroke: white; }
+.dept-name { font-size: 12px; font-weight: 700; margin-bottom: 2px; }
+.dept-role { font-size: 10px; color: #6e7781; margin-bottom: 5px; }
+.dept-count { font-size: 10px; color: #8b949e; margin-top: 6px; }
+.agents-list { display: flex; flex-direction: column; gap: 4px; }
+.agent-item { display: flex; align-items: center; gap: 5px; padding: 5px; background: #fafbfc; border-radius: 4px; }
+.agent-icon { width: 20px; height: 20px; border-radius: 4px; background: #6e7781; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.agent-icon svg { width: 12px; height: 12px; fill: white; }
 .agent-info { flex: 1; min-width: 0; }
-.agent-name { font-size: 13px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.agent-activity { font-size: 11px; color: #6e7781; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.agent-status { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; flex-shrink: 0; }
-.bottom-panels { display: grid; grid-template-columns: 1.8fr 1fr 1fr; gap: 16px; }
-.panel { background: white; border-radius: 12px; padding: 16px; border: 1px solid #e8eaed; }
-.panel-header { display: flex; justify-content: space-between; margin-bottom: 12px; }
-.panel-title { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-.view-all { font-size: 13px; color: #4a5568; font-weight: 600; cursor: pointer; }
+.agent-name { font-size: 10px; font-weight: 600; margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.agent-activity { font-size: 9px; color: #6e7781; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.agent-status { width: 5px; height: 5px; border-radius: 50%; background: #22c55e; flex-shrink: 0; }
+.bottom-panels { display: grid; grid-template-columns: 1.8fr 1fr 1fr; gap: 10px; }
+.panel { background: white; border-radius: 10px; padding: 12px; border: 1px solid #e8eaed; }
+.panel-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
+.panel-title { font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+.view-all { font-size: 11px; color: #4a5568; font-weight: 600; cursor: pointer; }
 .activity-table { width: 100%; font-size: 12px; }
 .activity-table th { text-align: left; padding: 8px 10px; color: #6e7781; font-weight: 600; font-size: 11px; border-bottom: 1px solid #f6f8fa; }
 .activity-table td { padding: 10px; border-bottom: 1px solid #f8fafc; }
@@ -104,23 +132,72 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 </style>
 </head>
 <body>
+<div class="main-container">
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <span style="font-size: 13px; font-weight: 600; color: white;">Menú</span>
+    <button class="sidebar-toggle" id="sidebarToggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="11 17 6 12 11 7"></polyline>
+        <polyline points="18 17 13 12 18 7"></polyline>
+      </svg>
+    </button>
+  </div>
+  <div class="sidebar-menu">
+  <div class="menu-item active">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    <span>Dashboard</span>
+  </div>
+  <div class="menu-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    <span>Organigrama</span>
+  </div>
+  <div class="menu-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    <span>Actividad en vivo</span>
+  </div>
+  <div class="menu-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    <span>Reportes</span>
+  </div>
+  <div class="menu-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    <span>Tareas</span>
+  </div>
+  <div class="menu-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    <span>Agentes</span>
+  </div>
+  <div class="menu-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    <span>Conocimiento</span>
+  </div>
+  <div class="menu-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6m5.2-14.2l-4.2 4.2m-1.7 1.7l-4.2 4.2M23 12h-6m-6 0H1m14.2 5.2l-4.2-4.2m-1.7-1.7l-4.2-4.2"/></svg>
+    <span>Configuración</span>
+  </div>
+  </div>
+  <div class="sidebar-footer">
+    <div class="system-status-sidebar">
+      <div class="dot"></div>
+      <div class="system-status-sidebar-text">
+        <div class="system-status-sidebar-title">Sistema Operativo</div>
+        <div class="system-status-sidebar-subtitle">Todos los agentes activos</div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<div class="content-wrapper shifted" id="contentWrapper">
 <div class="header">
   <div>
-    <h1>Hola, Gerente General</h1>
+    <h1>Centro de Agentes</h1>
     <p>Supervisando 22 agentes de IA en tiempo real</p>
   </div>
   <div class="header-right">
     <div class="date-time">
       <span id="date">Lun, 26 May 2025</span>&nbsp;&nbsp;<span id="time">10:24</span>
-    </div>
-    <div class="system-status-card">
-      <div class="system-status-indicator">
-        <div class="dot"></div>
-        <span class="system-status-title">Sistema Online</span>
-      </div>
-      <div class="system-status-subtitle">Operación normal</div>
-      <div class="system-status-count">22 / 22</div>
-      <div class="system-status-label">Agentes activos</div>
     </div>
     <div class="notification-bell">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -405,13 +482,32 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
     </div>
   </div>
 </div>
+</div>
+</div>
 
 <script>
+// Reloj
 setInterval(()=>{
 const n=new Date(),d=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],m=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 document.getElementById('date').textContent=`${d[n.getDay()]}, ${n.getDate()} ${m[n.getMonth()]} ${n.getFullYear()}`;
 document.getElementById('time').textContent=`${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`;
 },60000);
+
+// Sidebar toggle
+const sidebar = document.getElementById('sidebar');
+const toggle = document.getElementById('sidebarToggle');
+const content = document.getElementById('contentWrapper');
+
+toggle.addEventListener('click', () => {
+  sidebar.classList.toggle('collapsed');
+  if (sidebar.classList.contains('collapsed')) {
+    content.classList.remove('shifted');
+    content.classList.add('collapsed-shifted');
+  } else {
+    content.classList.remove('collapsed-shifted');
+    content.classList.add('shifted');
+  }
+});
 </script>
 </body>
 </html>
