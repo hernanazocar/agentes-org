@@ -1,6 +1,6 @@
-# 🤖 Sistema de Agentes Organizacionales IA
+# 🏢 BackOffice - Sistema de Agentes IA Automatizados
 
-Repositorio de coordinación para agentes Claude Code automatizados que funcionan 24/7 en la nube.
+Sistema de gestión organizacional automatizado con agentes Claude Code que funcionan 24/7 en la nube.
 
 ## 📊 Estructura Organizacional
 
